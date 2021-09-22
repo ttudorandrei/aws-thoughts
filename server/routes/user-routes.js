@@ -6,10 +6,13 @@ const awsConfig = {
 	region: "us-east-2",
 	endpoint: "http://localhost:8000",
 };
+
 AWS.config.update(awsConfig);
+
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 const table = "Thoughts";
 
+// get a list of users and their associated data
 router.get("/users", (req, res) => {
 	const params = {
 		TableName: table,
@@ -24,6 +27,7 @@ router.get("/users", (req, res) => {
 	});
 });
 
+// get data for a specific user
 router.get("/users/:username", (req, res) => {
 	console.info(`Querying for thought(s) from ${req.params.username}.`);
 
@@ -53,4 +57,26 @@ router.get("/users/:username", (req, res) => {
 	});
 });
 
+// Create new user at /api/users
+router.post("/users", (req, res) => {
+	const params = {
+		TableName: table,
+		Item: {
+			username: req.body.username,
+			createdAt: Date.now(),
+			thought: req.body.thought,
+		},
+	};
+	dynamodb.put(params, (err, data) => {
+		if (err) {
+			console.error(
+				`Unable to add item. Error JSON: ${JSON.stringify(err, null, 2)}`
+			);
+			res.status(500).json(err); // an error occurred
+		} else {
+			console.info(`Added item: ${JSON.stringify(data, null, 2)}`);
+			res.json({ Added: JSON.stringify(data, null, 2) });
+		}
+	});
+});
 module.exports = router;
