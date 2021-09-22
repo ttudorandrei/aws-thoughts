@@ -1,6 +1,3 @@
-const express = require("express");
-const router = express.Router();
-
 const AWS = require("aws-sdk");
 const awsConfig = {
 	region: "us-east-2",
@@ -12,8 +9,7 @@ AWS.config.update(awsConfig);
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 const table = "Thoughts";
 
-// get a list of users and their associated data
-router.get("/users", (req, res) => {
+const getAllUsers = (req, res) => {
 	const params = {
 		TableName: table,
 	};
@@ -25,10 +21,9 @@ router.get("/users", (req, res) => {
 			res.json(data.Items);
 		}
 	});
-});
+};
 
-// get data for a specific user
-router.get("/users/:username", (req, res) => {
+const getSpecificUserAndData = (req, res) => {
 	console.info(`Querying for thought(s) from ${req.params.username}.`);
 
 	const params = {
@@ -55,10 +50,9 @@ router.get("/users/:username", (req, res) => {
 			res.json(data.Items);
 		}
 	});
-});
+};
 
-// Create new user at /api/users
-router.post("/users", (req, res) => {
+const createUser = (req, res) => {
 	const params = {
 		TableName: table,
 		Item: {
@@ -78,5 +72,6 @@ router.post("/users", (req, res) => {
 			res.json({ Added: JSON.stringify(data, null, 2) });
 		}
 	});
-});
-module.exports = router;
+};
+
+module.exports = { getAllUsers, getSpecificUserAndData, createUser };
