@@ -17,5 +17,5 @@ app.use("/api/", userRoutes);
 
 // Start the API server
 app.listen(PORT, () =>
-	console.info(`🌎  ==> API Server now listening on PORT ${PORT}!`)
+	console.info(`🌎  ==> Access Server on http://localhost:${PORT}`)
 );
