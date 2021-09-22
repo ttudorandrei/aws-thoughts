@@ -7,6 +7,7 @@ AWS.config.update({
 
 const dynamodb = new AWS.DynamoDB({ apiVersion: "2012-08-10" });
 
+// create params object
 const params = {
 	TableName: "Thoughts",
 	KeySchema: [
@@ -23,16 +24,15 @@ const params = {
 	},
 };
 
+// create Table with params and a function to get the data or the error (if any)
 dynamodb.createTable(params, (err, data) => {
 	if (err) {
 		console.error(
-			"Unable to create table. Error JSON:",
-			JSON.stringify(err, null, 2)
+			`Unable to create table. Error JSON: ${JSON.stringify(err, null, 2)}`
 		);
 	} else {
 		console.info(
-			"Created table. Table description JSON:",
-			JSON.stringify(data, null, 2)
+			`Created table. Table description JSON: ${JSON.stringify(data, null, 2)}`
 		);
 	}
 });
