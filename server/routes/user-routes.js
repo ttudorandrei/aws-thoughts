@@ -24,4 +24,33 @@ router.get("/users", (req, res) => {
 	});
 });
 
+router.get("/users/:username", (req, res) => {
+	console.info(`Querying for thought(s) from ${req.params.username}.`);
+
+	const params = {
+		TableName: table,
+		KeyConditionExpression: "#un = :user",
+		ExpressionAttributeNames: {
+			"#un": "username",
+			"#ca": "createdAt",
+			"#th": "thought",
+		},
+		ExpressionAttributeValues: {
+			":user": req.params.username,
+		},
+		ProjectionExpression: "#th, #ca",
+		ScanIndexForward: false,
+	};
+
+	dynamodb.query(params, (err, data) => {
+		if (err) {
+			console.error(`Unable to query. Error: ${JSON.stringify(err, null, 2)}`);
+			res.status(500).json(err); // an error occurred
+		} else {
+			console.info("Query succeeded.");
+			res.json(data.Items);
+		}
+	});
+});
+
 module.exports = router;
