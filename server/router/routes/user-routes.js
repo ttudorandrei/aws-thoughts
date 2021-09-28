@@ -1,9 +1,9 @@
 const express = require("express");
 
 const {
-	getAllUsers,
-	getSpecificUserAndData,
-	createUser,
+  getAllUsers,
+  getSpecificUserAndData,
+  createUser,
 } = require("../controllers/user-controllers");
 
 const router = express.Router();
@@ -16,4 +16,5 @@ router.get("/users/:username", getSpecificUserAndData);
 
 // Create new user at /api/users
 router.post("/users", createUser);
+
 module.exports = router;
