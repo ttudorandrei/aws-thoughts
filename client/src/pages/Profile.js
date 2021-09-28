@@ -23,8 +23,6 @@ const Profile = (props) => {
         setIsLoaded(true);
       } catch (error) {
         console.error(error.message);
-        // if there's an error, google the error message
-        window.open(`https://www.google.ro/search?q=${error.message}`);
       }
     };
     fetchData();
