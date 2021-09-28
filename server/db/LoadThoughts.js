@@ -3,7 +3,6 @@ const fs = require("fs");
 
 AWS.config.update({
 	region: "us-east-2",
-	endpoint: "http://localhost:8000",
 });
 
 // create dynamoDB service object
